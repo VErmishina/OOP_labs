@@ -7,16 +7,16 @@
 #include <algorithm>
 #include "words_counter.h"
 
-/*check separate symbols*/
+
 bool separate(char& symbol) {  
     return (!(std::isalpha(symbol) || std::isdigit(symbol)));
 }
-/*read words from input to map*/ 
+
 std::map <std::string, int32_t> read_file (std::ifstream& file){  
 	std::map <std::string, int32_t> dictionary;
 	if (file.is_open()) {
 		std::string curr_word = ""; 
-		while(!file.eof()) {  /*reading symbol-by-symbol*/
+		while(!file.eof()) {  
 			char symbol = file.get();
 			if (separate(symbol)) {
 				++ dictionary[curr_word]; 
@@ -35,8 +35,9 @@ std::map <std::string, int32_t> read_file (std::ifstream& file){
 	return dictionary;
 }
 /*rewrite map to vector of pairs*/
-void map2vector(std::map <std::string, int32_t>& dictionary, std::vector<std::pair<int32_t, std::string>>& dict,
-				int& total_count, int& words_number){
+void map2vector(std::map <std::string, int32_t>& dictionary, 
+		std::vector<std::pair<int32_t, std::string>>& dict,
+		int& total_count, int& words_number){
 	std::pair<int32_t, std::string> temp;
 	for(auto it = dictionary.begin(); it != dictionary.end(); ++it) {
 		temp.first = it->second;
@@ -57,11 +58,11 @@ void write_to_output (std::ofstream& output, std::map<std::string, int32_t>& dic
 	
 	for (int i = 1; i <= words_number; ++i) { 
 		
-		output << (dict[words_number - i]).second << ", " <<
-				(dict[words_number - i]).first << ", " <<
-				(double)dict[words_number - i].first * 100 / total_count << "%" << std::endl;
+		output << (dict[words_number - i]).second << ", " << 
+			(dict[words_number - i]).first << ", " << 
+			(double)dict[words_number - i].first * 100 / total_count <<
+			"%" << std::endl;
 	}
-
 }
 
 
