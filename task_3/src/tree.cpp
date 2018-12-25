@@ -7,6 +7,13 @@ Tree::Tree(Data data)
 	right_ = nullptr;
 }
 
+Tree::Tree(std::pair<int32_t, std::string> pair)
+{
+	data_ = data;
+	left_ = nullptr;
+	right_ = nullptr;
+}
+
 Tree::Tree (Tree left, Tree right)
 {
 	data_.symbol_ = left.data_.symbol_ + right.data_.symbol_;

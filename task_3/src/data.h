@@ -12,7 +12,7 @@ Class Data
 	std::vector<bool> code_;
 
 public:
-	//Data();
+	Data();
 	Data(std::string symbol, uint32_t frequency, std::vector<bool> code);
 	~Data() = default;
 

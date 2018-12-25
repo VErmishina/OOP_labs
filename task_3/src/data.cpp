@@ -1,10 +1,19 @@
 #include <data.h>
 
+Data::Data: Data::Data(0, 0, 0);
+
 Data::Data(std::string symbol, uint32_t frequency, std::vector<bool> code)
 {
 	symbol_ = symbol;
 	frequency_ = frequency;
 	code_ = code;
+}
+
+Data::Data(pair<int32_t, std::string> mypair)
+{
+	symbol_ = mypair.second;
+	frequency_ = mypair.first;
+	code_ = 0;
 }
 
 std::string Data::get_s() const
