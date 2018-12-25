@@ -19,11 +19,11 @@ std::map <std::string, int32_t> read_file (std::ifstream& file){
 		while(!file.eof()) {  /*reading symbol-by-symbol*/
 			char symbol = file.get();
 			if (separate(symbol)) {
-				++ dictionary[curr_word]; /*???*/
-				curr_word = "";   /*start new current word*/
+				++ dictionary[curr_word]; 
+				curr_word = "";   
 			}
 			else {
-				curr_word = curr_word+symbol;	/*add symbol to word*/			
+				curr_word = curr_word+symbol;				
 			}
 		}
 
