@@ -26,6 +26,6 @@ public:
 
 	friend Tree;
 
-}
+};
 
 #endif // DATA_H
