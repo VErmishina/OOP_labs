@@ -24,6 +24,13 @@ private:
 
   template <typename T>
   T Read_line(std::stringstream& stream);
+
+  template <class ... Args, size_t ... Is>
+  void printImpl(std::tuple<Args...> tuple, std::index_sequence<Is...> seq);
+  
+  template <class ... Args>
+  void print(std::tuple <Args...> tuple);
+
   };
 
 template <typename... TArgs>
@@ -36,11 +43,11 @@ CSVParser(std::ifstream& input, int Skiped_lines){
   }
   while (std::getline(input, current_string)) {
     std::stringstream ss(current_string);
+    std::tuple<TArgs...> current_tuple;
     try {
-      std::tuple<TArgs...> current_tuple = {Read_line<TArgs>(ss)...};
-      for (int iter = 0; iter < column_count; ++iter){
-       std::cout << std::get<iter> (current_tuple) << " ";
-      } 
+      current_tuple = {Read_line<TArgs>(ss)...};
+      print(current_tuple);
+      std::cout << std::endl;
     }
     catch (std::invalid_argument& e) {
       std::cout  << "ЫЫЫЫЫ_0 in line: " << line_count << ", column: " << column_count << std::endl;
@@ -51,6 +58,7 @@ CSVParser(std::ifstream& input, int Skiped_lines){
     column_count = 1;
     
   }
+
 }
 
 template <typename ... TArgs>
@@ -86,6 +94,16 @@ T CSVParser<TArgs...>::Read_line(std::stringstream& stream) {
   }
   ++column_count;
   return result;
+}
+
+template <class ... Args, size_t ... Is>
+void printImpl(std::tuple<Args...> tuple, std::index_sequence<Is...> seq) {
+    (std::cout << ... << std::get<Is>(tuple));
+}
+
+template <class ... Args>
+void print(std::tuple <Args...> tuple) {
+    printImpl(tuple, std::make_index_sequence<sizeof...(Args)>{});
 }
 
 #endif // CSVPARSER_H
