@@ -12,11 +12,7 @@ int main(int argc, char** argv) {
 	}
 
   std::ifstream csv(argv[1]);
-  CSVParser<int, std::string, std::string> parse(csv, 0);
-
-  for (std::tuple<int, std::string, std::string> rs : parse) {
-    std::cout << rs << std::endl;
-  }
+  CSVParser<int, std::string> parse(csv, 0);
 
   return 0;
 }

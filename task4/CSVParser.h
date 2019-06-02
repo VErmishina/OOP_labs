@@ -6,6 +6,11 @@
 #include <string>
 #include <tuple>
 #include <sstream>
+#include <iterator>
+#include <algorithm>
+#include <exception>
+#include <utility>
+#include <ios>
 
 template <typename... TArgs>
 class CSVParser {
@@ -13,7 +18,7 @@ public:
   CSVParser(std::ifstream& input, int Skiped_lines);
 private:
   char separator = ',';
-  char screen = = '"';
+  char screen = '"';
   int line_count;
   int column_count;
 
@@ -33,13 +38,13 @@ CSVParser(std::ifstream& input, int Skiped_lines){
     std::stringstream ss(current_string);
     try {
       std::tuple<TArgs...> current_tuple = {Read_line<TArgs>(ss)...};
+      for (int iter = 0; iter < column_count; ++iter){
+       std::cout << std::get<iter> (current_tuple) << " ";
+      } 
     }
     catch (std::invalid_argument& e) {
       std::cout  << "ЫЫЫЫЫ_0 in line: " << line_count << ", column: " << column_count << std::endl;
-      return 1;
-    }
-    for (int iter = 0; iter < column_count; ++iter){
-       std::cout << std::get<iter>(current_tuple) << " ";
+      exit(1);
     }
     std::cout << std::endl;
     ++line_count;
