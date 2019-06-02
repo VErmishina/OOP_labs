@@ -12,6 +12,16 @@
 #include <utility>
 #include <ios>
 
+template <class ...Args, size_t ...Is>
+void printTupleImpl(std::tuple<Args...> tuple, std::index_sequence<Is...> seq) {
+((std::cout << std::get<Is>(tuple) << ' '), ...);
+}
+
+template <class ...Args>
+void printTuple(std::tuple<Args...> tuple) {
+printTupleImpl(tuple, std::make_index_sequence<sizeof...(Args)>{});
+}
+
 template <typename... TArgs>
 class CSVParser {
 public:
@@ -25,13 +35,8 @@ private:
   template <typename T>
   T Read_line(std::stringstream& stream);
 
-  template <class ... Args, size_t ... Is>
-  void printImpl(std::tuple<Args...> tuple, std::index_sequence<Is...> seq);
-  
-  template <class ... Args>
-  void print(std::tuple <Args...> tuple);
 
-  };
+};
 
 template <typename... TArgs>
 CSVParser<TArgs...>::
@@ -46,7 +51,7 @@ CSVParser(std::ifstream& input, int Skiped_lines){
     std::tuple<TArgs...> current_tuple;
     try {
       current_tuple = {Read_line<TArgs>(ss)...};
-      print(current_tuple);
+      printTuple(current_tuple);
       std::cout << std::endl;
     }
     catch (std::invalid_argument& e) {
@@ -96,14 +101,6 @@ T CSVParser<TArgs...>::Read_line(std::stringstream& stream) {
   return result;
 }
 
-template <class ... Args, size_t ... Is>
-void printImpl(std::tuple<Args...> tuple, std::index_sequence<Is...> seq) {
-    (std::cout << ... << std::get<Is>(tuple));
-}
 
-template <class ... Args>
-void print(std::tuple <Args...> tuple) {
-    printImpl(tuple, std::make_index_sequence<sizeof...(Args)>{});
-}
 
 #endif // CSVPARSER_H
